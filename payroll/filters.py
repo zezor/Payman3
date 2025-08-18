@@ -18,4 +18,4 @@ class PayrollRecordFilter(django_filters.FilterSet):
 
     class Meta:
         model = PayrollRecord
-        fields = ["employee", "period_start", "period_end"]
+        fields = ["employee_id", "component_type", "description", "gross_salary", "net_salary"]

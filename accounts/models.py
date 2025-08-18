@@ -28,10 +28,12 @@ class User(AbstractUser):
 
 class EmployeeProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
-    employee_id = models.CharField(max_length=30, unique=True)
+
+    employee_id = models.ForeignKey("payroll.Employee", on_delete=models.CASCADE, related_name="employee_profile")
     department = models.CharField(max_length=100)
     position = models.CharField(max_length=100)
     basic_salary = models.DecimalField(max_digits=12, decimal_places=2)
+    bank_name = models.CharField(max_length=120, blank=True)
     bank_account_number = models.CharField(max_length=60, blank=True)
 
     def __str__(self):

@@ -90,7 +90,7 @@ class EmployeeDeduction(models.Model):
     active = models.BooleanField(default=True)
 
     class Meta:
-        unique_together = ("employee", "deduction_type")
+        unique_together = ("employee_id", "deduction_type")
 
 class TaxBracket(models.Model):
     """Generic progressive PAYE table for a given year and currency."""
@@ -159,7 +159,7 @@ class Payslip(models.Model):
     net_pay = models.DecimalField(max_digits=12, decimal_places=2)
 
     class Meta:
-        unique_together = ("run", "employee")
+        unique_together = ("run", "employee_id")
 
 class PayslipLine(models.Model):
     EARNING = "earning"
@@ -198,7 +198,7 @@ class PayrollRecord(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ["employee", "component_type"]
+        ordering = ["employee_id", "component_type"]
 
     def __str__(self):
-        return f"{self.employee} - {self.component_type}: {self.amount}"
+        return f"{self.employee_id} - {self.component_type}: {self.amount}"
