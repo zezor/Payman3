@@ -40,7 +40,6 @@ class Employee(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="employee")
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
-    staff_id = models.CharField(max_length=30, unique=True)
     department = models.ForeignKey(Department, on_delete=models.PROTECT, related_name="employees")
     grade_step = models.ForeignKey(GradeStep, on_delete=models.PROTECT, related_name="employees")
     employment_type = models.CharField(max_length=20, choices=EMPLOYMENT_TYPES, default=PERMANENT)
@@ -53,8 +52,8 @@ class Employee(models.Model):
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"{self.staff_id} - {self.user.get_full_name() or self.user.username}"
-   
+        return f"{self.user.get_full_name() or self.user.username} - {self.position} ({self.department})"
+
 
 
 class AllowanceType(models.Model):
@@ -76,16 +75,16 @@ class DeductionType(models.Model):
         return self.name
 
 class EmployeeAllowance(models.Model):
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name="allowances")
+    employee_id = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name="allowances")
     allowance_type = models.ForeignKey(AllowanceType, on_delete=models.PROTECT)
     amount = models.DecimalField(max_digits=12, decimal_places=2, validators=[MinValueValidator(0)])
     active = models.BooleanField(default=True)
 
     class Meta:
-        unique_together = ("employee", "allowance_type")
+        unique_together = ("employee_id", "allowance_type")
 
 class EmployeeDeduction(models.Model):
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name="deductions")
+    employee_id = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name="deductions")
     deduction_type = models.ForeignKey(DeductionType, on_delete=models.PROTECT)
     amount = models.DecimalField(max_digits=12, decimal_places=2, validators=[MinValueValidator(0)])
     active = models.BooleanField(default=True)
@@ -150,7 +149,7 @@ class PayrollRun(models.Model):
 
 class Payslip(models.Model):
     run = models.ForeignKey(PayrollRun, on_delete=models.CASCADE, related_name="payslips")
-    employee = models.ForeignKey(Employee, on_delete=models.PROTECT, related_name="payslips")
+    employee_id = models.ForeignKey(Employee, on_delete=models.PROTECT, related_name="payslips")
     gross_pay = models.DecimalField(max_digits=12, decimal_places=2)
     taxable_income = models.DecimalField(max_digits=12, decimal_places=2)
     tax = models.DecimalField(max_digits=12, decimal_places=2)
@@ -178,8 +177,8 @@ class PayrollRecord(models.Model):
     Useful for audits, analytics, and exporting detailed payroll history.
     """
     payslip = models.ForeignKey("Payslip", on_delete=models.CASCADE, related_name="records")
-    employee = models.ForeignKey("Employee", on_delete=models.CASCADE, related_name="payroll_records")
-    
+    employee_id = models.ForeignKey("Employee", on_delete=models.CASCADE, related_name="payroll_records")
+
     COMPONENT_TYPES = [
         ("BASIC", "Basic Salary"),
         ("ALLOW", "Allowance"),
