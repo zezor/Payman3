@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Payroll Dashboard</h2>
+  <div class="row mt-3">
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Payroll Periods</h5>
+          <p class="card-text">Manage payroll periods and view history.</p>
+          <a href="{% url 'payroll:period_list' %}" class="btn btn-primary btn-sm">View Periods</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Run Payroll</h5>
+          <p class="card-text">Start a new payroll run for the current month.</p>
+          <a href="{% url 'payroll:start_run' %}" class="btn btn-success btn-sm">Start Run</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Reports</h5>
+          <p class="card-text">Download reports & payslips in PDF format.</p>
+          <a href="{% url 'payroll:report_overview' %}" class="btn btn-secondary btn-sm">Reports</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

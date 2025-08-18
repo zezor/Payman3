@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Payroll Periods</h2>
+  <table class="table table-bordered mt-3">
+    <thead class="table-light">
+      <tr>
+        <th>ID</th>
+        <th>Month</th>
+        <th>Year</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for period in periods %}
+      <tr>
+        <td>{{ period.id }}</td>
+        <td>{{ period.month }}</td>
+        <td>{{ period.year }}</td>
+        <td>
+          {% if period.is_closed %}
+            <span class="badge bg-danger">Closed</span>
+          {% else %}
+            <span class="badge bg-success">Open</span>
+          {% endif %}
+        </td>
+        <td>
+          <a href="{% url 'payroll:run_detail' period.id %}" class="btn btn-sm btn-info">Details</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="5">No payroll periods found.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

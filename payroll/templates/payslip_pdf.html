@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Payslip - {{ slip.employee.full_name }}</title>
+    <style>
+      body { font-family: Arial, sans-serif; font-size: 12px; }
+      .header { text-align: center; margin-bottom: 20px; }
+      table { width: 100%; border-collapse: collapse; }
+      th, td { border: 1px solid #000; padding: 6px; text-align: left; }
+      .net { background: #e8f5e9; font-weight: bold; }
+    </style>
+</head>
+<body>
+  <div class="header">
+    <h3>UNIVERSITY PAYSLIP</h3>
+    <p>{{ slip.run.period.month }} {{ slip.run.period.year }}</p>
+  </div>
+
+  <p><strong>Employee:</strong> {{ slip.employee.full_name }}<br>
+     <strong>Department:</strong> {{ slip.employee.department.name }}</p>
+
+  <table>
+    <tr><th>Gross Income</th><td>{{ slip.gross_income }}</td></tr>
+    <tr><th>Pre-tax Deductions</th><td>{{ slip.pre_tax_deductions }}</td></tr>
+    <tr><th>Taxable Income</th><td>{{ slip.taxable_income }}</td></tr>
+    <tr><th>P.A.Y.E</th><td>{{ slip.paye_tax }}</td></tr>
+    <tr><th>SSNIT (Employee)</th><td>{{ slip.ssnit_employee }}</td></tr>
+    <tr><th>Other Deductions</th><td>{{ slip.post_tax_deductions }}</td></tr>
+    <tr class="net"><th>Net Pay</th><td>{{ slip.net_pay }}</td></tr>
+  </table>
+
+  <p style="margin-top:20px;">Generated on {{ slip.created_at }}</p>
+</body>
+</html>

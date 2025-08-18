@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Payroll Run – {{ run.period.month }} {{ run.period.year }}</h2>
+  <p>Status: {% if run.is_finalized %}<span class="badge bg-success">Finalized</span>{% else %}<span class="badge bg-warning">In Progress</span>{% endif %}</p>
+  
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Employee</th>
+        <th>Gross Pay</th>
+        <th>P.A.Y.E</th>
+        <th>SSNIT</th>
+        <th>Net Pay</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for slip in run.payslips.all %}
+      <tr>
+        <td>{{ slip.employee.full_name }}</td>
+        <td>{{ slip.gross_income }}</td>
+        <td>{{ slip.paye_tax }}</td>
+        <td>{{ slip.ssnit_employee }}</td>
+        <td>{{ slip.net_pay }}</td>
+        <td>
+          <a href="{% url 'payroll:payslip_detail' slip.id %}" class="btn btn-sm btn-primary">View</a>
+          <a href="{% url 'payroll:payslip_pdf' slip.id %}" class="btn btn-sm btn-secondary">PDF</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

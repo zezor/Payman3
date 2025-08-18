@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Payslip – {{ slip.employee.full_name }}</h2>
+  <p><strong>Period:</strong> {{ slip.run.period.month }} {{ slip.run.period.year }}</p>
+
+  <table class="table table-bordered">
+    <tr><th>Gross Income</th><td>{{ slip.gross_income }}</td></tr>
+    <tr><th>Pre-tax Deductions</th><td>{{ slip.pre_tax_deductions }}</td></tr>
+    <tr><th>Taxable Income</th><td>{{ slip.taxable_income }}</td></tr>
+    <tr><th>P.A.Y.E</th><td>{{ slip.paye_tax }}</td></tr>
+    <tr><th>SSNIT (Employee)</th><td>{{ slip.ssnit_employee }}</td></tr>
+    <tr><th>Other Deductions</th><td>{{ slip.post_tax_deductions }}</td></tr>
+    <tr class="table-success"><th>Net Pay</th><td><strong>{{ slip.net_pay }}</strong></td></tr>
+  </table>
+
+  <a href="{% url 'payroll:payslip_pdf' slip.id %}" class="btn btn-secondary">Download PDF</a>
+</div>
+{% endblock %}
