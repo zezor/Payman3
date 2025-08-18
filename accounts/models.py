@@ -21,7 +21,9 @@ class User(AbstractUser):
         return f"{self.username} ({self.get_role_display()})"
     
 
-    REQUIRED_FIELDS = ['email']
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = []
+    
 
 
 class EmployeeProfile(models.Model):
