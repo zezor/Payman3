@@ -40,6 +40,8 @@ class Employee(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="employee")
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
+    address = models.CharField(max_length=255, blank=True)
+    phone = models.CharField(max_length=15, blank=True)
     department = models.ForeignKey(Department, on_delete=models.PROTECT, related_name="employees")
     grade_step = models.ForeignKey(GradeStep, on_delete=models.PROTECT, related_name="employees")
     employment_type = models.CharField(max_length=20, choices=EMPLOYMENT_TYPES, default=PERMANENT)

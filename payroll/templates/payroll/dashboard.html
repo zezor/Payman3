@@ -17,7 +17,7 @@
         <div class="card-body">
           <h5 class="card-title">Run Payroll</h5>
           <p class="card-text">Start a new payroll run for the current month.</p>
-          <a href="{% url 'payroll:start_run' %}" class="btn btn-success btn-sm">Start Run</a>
+          <a href="{% url 'payroll:period_list' %}" class="btn btn-success btn-sm">Start Run</a>
         </div>
       </div>
     </div>
@@ -26,10 +26,12 @@
         <div class="card-body">
           <h5 class="card-title">Reports</h5>
           <p class="card-text">Download reports & payslips in PDF format.</p>
-          <a href="{% url 'payroll:report_overview' %}" class="btn btn-secondary btn-sm">Reports</a>
+          <a href="{% url 'payroll:period_list' %}" class="btn btn-secondary btn-sm">Reports</a>
         </div>
       </div>
     </div>
   </div>
 </div>
 {% endblock %}
+
+

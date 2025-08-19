@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Pay Periods</h2>
+<ul>
+    {% for period in periods %}
+        <li>{{ period.start_date }} - {{ period.end_date }}</li>
+    {% empty %}
+        <li>No pay periods found.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

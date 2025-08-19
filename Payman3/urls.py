@@ -17,12 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth import get_user_model
+from accounts.views import login_view, logout_view
 from .import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.dashboard, name='dashboard'),  # Assuming you have a dashboard view
+    path('', login_view, name='login'),
 
-    path('', include('payroll.urls')),
-    path('', include('accounts.urls')),
+    path('', include("payroll.urls", namespace="payroll")),
+    path('', include('accounts.urls', namespace="accounts")),
 ]

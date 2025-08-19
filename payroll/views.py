@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.core.paginator import Paginator
 from accounts.decorators import role_required
 
+from .models import PayrollPeriod
 from .models import Employee, PayrollRecord
 from .forms import EmployeeForm, PayrollRecordForm
 from .filters import EmployeeFilter, PayrollRecordFilter
@@ -23,6 +24,7 @@ def employee_list(request):
 @role_required(["admin", "hr_manager"])
 @permission_required("payroll.add_employee", raise_exception=True)
 def employee_create(request):
+ 
     if request.method == "POST":
         form = EmployeeForm(request.POST)
         if form.is_valid():
@@ -30,6 +32,7 @@ def employee_create(request):
             messages.success(request, "Employee added successfully.")
             return redirect("employee_list")
     else:
+        messages.success(request, "Employee added successfully.")
         form = EmployeeForm()
     return render(request, "payroll/employee_form.html", {"form": form})
 
@@ -67,3 +70,21 @@ def payroll_detail(request, pk):
     record = get_object_or_404(PayrollRecord, pk=pk)
     return render(request, "payroll/payroll_detail.html", {"record": record})
 
+@role_required(["payroll_officer", "hr_manager", "admin", "auditor"])
+def dashboard(request):
+    if not request.user.is_authenticated:
+        return redirect("login")
+    
+    # Example data for dashboard
+    total_employees = Employee.objects.count()
+    total_payroll_records = PayrollRecord.objects.count()
+    
+    return render(request, "payroll/dashboard.html", {
+        "total_employees": total_employees,
+        "total_payroll_records": total_payroll_records,
+    })
+
+
+def period_list(request):
+    periods = PayrollPeriod.objects.all().order_by("-start_date")
+    return render(request, "payroll/period_list.html", {"periods": periods})
