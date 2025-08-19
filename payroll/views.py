@@ -4,9 +4,7 @@ from django.contrib import messages
 from django.urls import reverse
 from django.core.paginator import Paginator
 from accounts.decorators import role_required
-
-from .models import PayrollPeriod
-from .models import Employee, PayrollRecord
+from .models import Employee, PayrollRecord, PayrollPeriod, Department
 from .forms import EmployeeForm, PayrollRecordForm
 from .filters import EmployeeFilter, PayrollRecordFilter
 
@@ -21,20 +19,46 @@ def employee_list(request):
     return render(request, "payroll/employee_list.html", {"filter": f, "employees": employees})
 
 
-@role_required(["admin", "hr_manager"])
-@permission_required("payroll.add_employee", raise_exception=True)
+# @role_required(["payroll_officer", "hr_manager", "admin"])
+# def employee_create(request):
+#     if request.method == "POST":
+#         form = EmployeeForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, "Employee added successfully.")
+#             return redirect("payroll:employee_list")
+#     else:
+#         form = EmployeeForm()
+    
+#     return render(request, "payroll/employee_form.html", {"form": form})
+
+
+@role_required(["payroll_officer", "hr_manager", "admin"])
 def employee_create(request):
- 
     if request.method == "POST":
-        form = EmployeeForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Employee added successfully.")
-            return redirect("employee_list")
-    else:
+        dept_id = request.POST.get('department')
+        department = Department.objects.get(id=dept_id) if dept_id else None
+
+        Employee.objects.create(
+            first_name=request.POST.get('first_name'),
+            last_name=request.POST.get('last_name'),
+            email=request.POST.get('email'),
+            phone=request.POST.get('phone'),
+            department=department,  # ✅ pass the instance, not ID
+            position=request.POST.get('position'),
+            basic_salary=request.POST.get('basic_salary'),
+            bank_name=request.POST.get('bank_name'),
+            bank_account_number=request.POST.get('bank_account_number'),
+        )
         messages.success(request, "Employee added successfully.")
-        form = EmployeeForm()
+        return redirect("payroll:employee_list")
+
+    form = EmployeeForm()
     return render(request, "payroll/employee_form.html", {"form": form})
+
+
+
+
 
 @role_required(["payroll_officer", "hr_manager", "admin"])
 def employee_detail(request, pk):

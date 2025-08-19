@@ -5,11 +5,10 @@ from .models import Employee, PayrollRecord
 class EmployeeForm(forms.ModelForm):
     class Meta:
         model = Employee
-        fields = [
-            "first_name", "last_name", "email", "phone",
-            "address", "id", "department", "position",
-            "basic_salary", "bank_name", "bank_account_number"
-        ]
+        fields = '__all__'  # Include all fields for the Employee model
+        widgets = {
+            "password": forms.PasswordInput(),
+        }
 
 
 class PayrollRecordForm(forms.ModelForm):

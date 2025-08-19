@@ -37,13 +37,13 @@ class Employee(models.Model):
         (ADJUNCT, "Adjunct"),
     ]
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="employee")
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="employee",null=True, blank=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     address = models.CharField(max_length=255, blank=True)
-    phone = models.CharField(max_length=15, blank=True)
-    department = models.ForeignKey(Department, on_delete=models.PROTECT, related_name="employees")
-    grade_step = models.ForeignKey(GradeStep, on_delete=models.PROTECT, related_name="employees")
+    phone = models.CharField(max_length=15, blank=True, unique=True)
+    department = models.ForeignKey(Department, on_delete=models.PROTECT, related_name="employees", null=True, blank=True)
+    grade_step = models.ForeignKey(GradeStep, on_delete=models.PROTECT, related_name="employees", null=True, blank=True)
     employment_type = models.CharField(max_length=20, choices=EMPLOYMENT_TYPES, default=PERMANENT)
     bank_name = models.CharField(max_length=120, blank=True)
     bank_account_number = models.CharField(max_length=60, blank=True)

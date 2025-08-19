@@ -50,6 +50,26 @@
       {{ form.address }}
     </div>
 
+    <div class="mb-3">
+      <label for="id_position" class="form-label">Position</label>
+      {{ form.position }}
+    </div>
+
+    <div class="mb-3">
+      <label for="id_basic_salary" class="form-label">Basic Salary</label>
+      {{ form.basic_salary }}
+    </div>
+
+    <div class="mb-3">
+      <label for="id_bank_name" class="form-label">Bank Name</label>
+      {{ form.bank_name }}
+    </div>
+
+    <div class="mb-3">
+      <label for="id_bank_account_number" class="form-label">Bank Account Number</label>
+      {{ form.bank_account_number }}
+    </div>
+
     <div class="mt-4">
       <button type="submit" class="btn btn-success">
         {% if form.instance.pk %}Update Employee{% else %}Create Employee{% endif %}

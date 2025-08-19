@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Payroll List</h2>
+    <table class="table table-bordered table-striped mt-3">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Employee</th>
+                <th>Period</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for payroll in payrolls %}
+            <tr>
+                <td>{{ payroll.id }}</td>
+                <td>{{ payroll.employee }}</td>
+                <td>{{ payroll.period }}</td>
+                <td>
+                    {% if payroll.status == "completed" %}
+                        <span class="badge bg-success">Completed</span>
+                    {% else %}
+                        <span class="badge bg-warning">Pending</span>
+                    {% endif %}
+                </td>
+                <td>{{ payroll.created_at|date:"Y-m-d" }}</td>
+                <td>
+                    <a href="{% url 'payroll:payroll_detail' payroll.id %}" class="btn btn-sm btn-info">
+                        <i class="bi bi-eye"></i> View
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center">No payroll records found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

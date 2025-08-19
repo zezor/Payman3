@@ -52,14 +52,18 @@
     <!-- Top Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/">Payman</a>
+            <a class="navbar-brand" href="/">Payman</a> 
+            <p class="text-white">
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ms-auto">
                     {% if user.is_authenticated %}
-                        <li class="nav-item"><a class="nav-link" href="{% url 'accounts:logout' %}"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+                    <li class="text-white">Welcome, {{ user.first_name }} </li>
+                    <p class="text-white"><span class="role">{{ user.role }}.</span></p>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'accounts:logout' %}"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
                     {% else %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'accounts:login' %}"><i class="bi bi-box-arrow-in-right"></i> Login</a></li>
                     {% endif %}
+                    
                 </ul>
             </div>
         </div>
