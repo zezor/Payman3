@@ -66,3 +66,4 @@ def payroll_list(request):
 def payroll_detail(request, pk):
     record = get_object_or_404(PayrollRecord, pk=pk)
     return render(request, "payroll/payroll_detail.html", {"record": record})
+

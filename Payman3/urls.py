@@ -16,9 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.shortcuts import render, get_object_or_404, redirect
+from .import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.dashboard, name='dashboard'),  # Assuming you have a dashboard view
+
     path('', include('payroll.urls')),
     path('', include('accounts.urls')),
 ]
