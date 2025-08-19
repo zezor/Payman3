@@ -4,7 +4,8 @@
 <a href="{% url 'payroll:employee_create' %}" class="btn btn-primary mb-3">Add Employee</a>
 <table class="table table-bordered">
   <tr>
-    <th>ID</th><th>Name</th><th>Department</th><th>Action</th>
+    <th>ID</th><th>Name</th><th>Department</th><th>Action</th><th>Position</th><th>Basic Salary</th><th>Bank Name</th><th>Bank Branch</th>
+    <th>Bank Account</th><th>Grade Step</th><th>Employment Type</th><th>Active</th><th>Date Created</th>
   </tr>
   {% for emp in employees %}
   <tr>
@@ -12,6 +13,15 @@
     <td><a href="{% url 'payroll:employee_detail' emp.id %}">{{ emp.first_name }} {{ emp.last_name }}</a></td>
     <td>{{ emp.department }}</td>
     <td><a href="{% url 'payroll:employee_edit' emp.id %}">Edit</a></td>
+    <td>{{ emp.position }}</td>
+    <td>{{ emp.basic_salary }}</td>
+    <td>{{ emp.bank_name }}</td>
+    <td>{{ emp.bank_branch }}</td>
+    <td>{{ emp.bank_account_number }}</td>
+    <td>{{ emp.grade_step }}</td>
+    <td>{{ emp.employment_type }}</td>
+    <td>{{ emp.is_active }}</td>
+    <td>{{ emp.date_created }}</td>
   </tr>
   {% endfor %}
 </table>

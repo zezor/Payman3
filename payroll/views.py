@@ -57,6 +57,52 @@ def employee_create(request):
     return render(request, "payroll/employee_form.html", {"form": form})
 
 
+# @role_required(["admin", "hr_manager"])
+# def employee_edit(request, pk):
+#     employee = get_object_or_404(Employee, pk=pk)
+
+#     if request.method == "POST":
+#         form = EmployeeForm(request.POST, instance=employee)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, "Employee updated successfully.")
+#             return redirect("payroll:employee_list")
+#     else:
+#         form = EmployeeForm(instance=employee)
+
+#     return render(request, "payroll/employee_form.html", {
+#         "form": form,
+#         "employee": employee,
+#         "title": "Edit Employee",
+#     })
+
+
+@role_required(["admin", "hr_manager"])
+def employee_edit(request, pk):
+    employee = get_object_or_404(Employee, pk=pk)
+
+    if request.method == "POST":
+        employee.first_name = request.POST.get('first_name')
+        employee.last_name = request.POST.get('last_name')
+        employee.email = request.POST.get('email')
+        employee.phone = request.POST.get('phone')
+        employee.department.id = request.POST.get('department')  # ✅ store FK
+        employee.position = request.POST.get('position')
+        employee.basic_salary = request.POST.get('basic_salary')
+        employee.bank_name = request.POST.get('bank_name')
+        employee.bank_account_number = request.POST.get('bank_account_number')
+
+        employee.save()
+        messages.success(request, "Employee updated successfully.")
+        return redirect("payroll:employee_list")
+
+    form = EmployeeForm(instance=employee)
+    return render(request, "payroll/employee_form.html", {
+        "form": form,
+        "employee": employee,
+        "title": "Edit Employee",
+    })
+
 
 
 
@@ -65,19 +111,6 @@ def employee_detail(request, pk):
     employee = get_object_or_404(Employee, pk=pk)
     return render(request, "payroll/employee_detail.html", {"employee": employee})
 
-
-@role_required(["admin", "hr_manager"])
-def employee_edit(request, pk):
-    employee = get_object_or_404(Employee, pk=pk)
-    if request.method == "POST":
-        form = EmployeeForm(request.POST, instance=employee)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Employee updated successfully.")
-            return redirect("employee_detail", pk=pk)
-    else:
-        form = EmployeeForm(instance=employee)
-    return render(request, "payroll/employee_form.html", {"form": form})
 
 
 @role_required(["payroll_officer", "hr_manager", "admin", "auditor"])

@@ -46,6 +46,7 @@ class Employee(models.Model):
     grade_step = models.ForeignKey(GradeStep, on_delete=models.PROTECT, related_name="employees", null=True, blank=True)
     employment_type = models.CharField(max_length=20, choices=EMPLOYMENT_TYPES, default=PERMANENT)
     bank_name = models.CharField(max_length=120, blank=True)
+    bank_branch = models.CharField(max_length=120, blank=True)
     bank_account_number = models.CharField(max_length=60, blank=True)
     email = models.EmailField(unique=True)
     position = models.CharField(max_length=100)
@@ -54,7 +55,11 @@ class Employee(models.Model):
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"{self.user.get_full_name() or self.user.username} - {self.position} ({self.department})"
+
+        if self.user:
+             return self.user.get_full_name() or self.user.username
+        return f"Employee {self.id}"
+
 
 
 
@@ -76,23 +81,22 @@ class DeductionType(models.Model):
     def __str__(self):
         return self.name
 
-class EmployeeAllowance(models.Model):
-    employee_id = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name="allowances")
+class Allowance(models.Model):
+
     allowance_type = models.ForeignKey(AllowanceType, on_delete=models.PROTECT)
     amount = models.DecimalField(max_digits=12, decimal_places=2, validators=[MinValueValidator(0)])
     active = models.BooleanField(default=True)
 
     class Meta:
-        unique_together = ("employee_id", "allowance_type")
+        unique_together = ("id", "amount")
 
-class EmployeeDeduction(models.Model):
-    employee_id = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name="deductions")
+class Deduction(models.Model):
     deduction_type = models.ForeignKey(DeductionType, on_delete=models.PROTECT)
     amount = models.DecimalField(max_digits=12, decimal_places=2, validators=[MinValueValidator(0)])
     active = models.BooleanField(default=True)
 
     class Meta:
-        unique_together = ("employee_id", "deduction_type")
+        unique_together = ("id", "amount")
 
 class TaxBracket(models.Model):
     """Generic progressive PAYE table for a given year and currency."""
